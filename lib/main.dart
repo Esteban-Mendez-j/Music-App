@@ -1,6 +1,20 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
 
-void main() {
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:musicapp/config/environment.dart';
+
+Future<void> main() async {
+  try {
+    await dotenv.load();
+    Environment.apiUrl;
+    Environment.clientId;
+    Environment.secretClient;
+  } catch (e) {
+    log("Error al cargar las variables de entorno: $e");
+    return;
+  }
+
   runApp(const MyApp());
 }
 
