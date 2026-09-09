@@ -7,7 +7,6 @@ import 'package:musicapp/config/environment.dart';
 Future<void> main() async {
   try {
     await dotenv.load();
-    Environment.apiUrl;
     Environment.clientId;
     Environment.secretClient;
   } catch (e) {

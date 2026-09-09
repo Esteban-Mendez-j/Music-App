@@ -14,7 +14,7 @@ class AuthService {
   Auth? _currentAuth;
 
   // obtencion de variables
-  final apiUrl = Environment.apiUrl;
+  final apiUrl = Environment.authUrl;
   final String grantType = "client_credentials";
 
   AuthService._internal();
@@ -31,7 +31,9 @@ class AuthService {
   Future<Auth> _fetchToken() async {
     final response = await http.post(
       Uri.parse("$apiUrl/token"),
-      headers: <String, String>{"Content-Type": "x-www-form-urlencoded"},
+      headers: <String, String>{
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
       body: <String, String>{
         "grant_type": grantType,
         "client_id": Environment.clientId,
