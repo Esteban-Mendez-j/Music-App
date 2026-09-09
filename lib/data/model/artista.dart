@@ -14,12 +14,19 @@ class Artista {
        _urlImg = urlImg,
        _tipo = tipo;
 
-  Artista.fromJson(Map<String, dynamic> json)
-    : _id = json["id"],
-      _nombre = json["name"],
-      _urlImg = json["images"]["url"],
-      _tipo = json["type"];
+  factory Artista.fromJson(Map<String, dynamic> json) {
+    String imagen = "";
+    if (json['images'] != null && (json['images'] as List).isNotEmpty) {
+      imagen = json['images'][0]['url'] ?? "Imagen no disponible";
+    }
 
+    return Artista(
+      id: json["id"] ?? "",
+      nombre: json["name"] ?? "",
+      urlImg: imagen,
+      tipo: json["type"] ?? "artist",
+    );
+  }
   String get id => _id;
   String get nombre => _nombre;
   String get urlImg => _urlImg;
