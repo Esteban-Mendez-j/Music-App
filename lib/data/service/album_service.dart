@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:musicapp/config/environment.dart';
 import 'package:musicapp/data/model/album.dart';
 import 'package:http/http.dart' as http;
-import 'package:musicapp/data/model/cancion.dart';
-import 'package:musicapp/data/model/paginacion.dart';
 import 'package:musicapp/data/service/auth_service.dart';
 
 class AlbumService {
@@ -39,19 +37,14 @@ class AlbumService {
     }
   }
 
-  // Obtener las canciones de un album
-  Future<List<Cancion>> fetchCancionesByAlbums({
-    required Paginacion paginacion,
-    required String id,
-  }) async {
+  // listado de albums de un artista
+  Future<List<Album>> fetchAlbumsByArtist({required String id}) async {
     try {
       String token = await AuthService().getValidToken();
 
       final response = await http
           .get(
-            Uri.parse(
-              "$apiUrl/albums/$id/tracks?limit=${paginacion.limit}&offset=${paginacion.offset}",
-            ),
+            Uri.parse("$apiUrl/artists/$id/albums"),
             headers: <String, String>{
               HttpHeaders.authorizationHeader: "Bearer $token",
               "Content-Type": "application/json",
@@ -63,18 +56,18 @@ class AlbumService {
           );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
-        final List<dynamic> items = data['items'] ?? [];
-        return items
-            .map((item) => Cancion.fromJson(item as Map<String, dynamic>))
+        Map<String, dynamic> data = jsonDecode(response.body);
+        List<dynamic> albums = data["items"] ?? [];
+        return albums
+            .map((album) => Album.fromJson(album as Map<String, dynamic>))
             .toList();
       } else {
         throw Exception(
-          "Error al solicitar canciones de un album: ${response.statusCode}",
+          "Error al solicitar albums de un artista: ${response.statusCode}",
         );
       }
     } catch (e) {
-      throw Exception("Error al obtener canciones de album: $e");
+      throw Exception("Error al obtener album de un artista: $e");
     }
   }
 }
