@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-Widget searchBar() {
+Widget searchBar({
+  ValueChanged<String>? onChanged,
+  ValueChanged<String>? onSubmitted,
+  VoidCallback? onFilterTap,
+}) {
   return Container(
     height: 44,
     padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -13,10 +17,13 @@ Widget searchBar() {
       children: [
         const Icon(Icons.search_rounded, color: Color(0xFF7A7893), size: 20),
         const SizedBox(width: 8),
-        const Expanded(
+        Expanded(
           child: TextField(
-            style: TextStyle(color: Colors.white, fontSize: 13),
-            decoration: InputDecoration(
+            style: const TextStyle(color: Colors.white, fontSize: 13),
+            onChanged: onChanged,
+            onSubmitted: onSubmitted,
+            textInputAction: TextInputAction.search,
+            decoration: const InputDecoration(
               hintText: 'Buscar pistas, artistas, álbumes...',
               hintStyle: TextStyle(
                 color: Color(0xFF7A7893),
