@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:musicapp/config/environment.dart';
+import 'package:musicapp/ui/view/home_view.dart';
 
 Future<void> main() async {
   try {
@@ -14,7 +15,7 @@ Future<void> main() async {
     return;
   }
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -23,9 +24,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: Center(child: Column(children: [Text("Spotify")])),
-      ),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(body: HomeView()),
     );
   }
 }
