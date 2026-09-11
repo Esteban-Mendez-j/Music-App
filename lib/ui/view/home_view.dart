@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:musicapp/ui/view_model/home_view_model.dart';
+import 'package:musicapp/ui/widget/error_info.dart';
 import 'package:musicapp/ui/widget/header.dart';
 import 'package:musicapp/ui/widget/info_card.dart';
+import 'package:musicapp/ui/widget/loading.dart';
+import 'package:musicapp/ui/widget/not_found.dart';
 import 'package:musicapp/ui/widget/search_bar.dart';
 
 class HomeView extends StatefulWidget {
@@ -18,7 +21,6 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     _viewModel = HomeViewModel();
-    // Carga inicial al montar la vista
     _viewModel.getAlbumRecientes();
   }
 
@@ -67,54 +69,27 @@ class _HomeViewState extends State<HomeView> {
                         const SizedBox(height: 18),
 
                         if (_viewModel.isLoading)
-                          const Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 40),
-                              child: CircularProgressIndicator(
-                                color: Color(0xFFFF4081),
-                              ),
-                            ),
-                          )
+                          Loading()
                         else if (_viewModel.hasError)
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 40),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    _viewModel.mensajeError,
-                                    style: const TextStyle(
-                                      color: Colors.redAccent,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  ElevatedButton(
-                                    onPressed: _viewModel.getAlbumRecientes,
-                                    child: const Text("Reintentar"),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          ErrorInfo(
+                            meensajeError: _viewModel.mensajeError,
+                            onPressed: _viewModel.getAlbumRecientes,
                           )
                         else if (_viewModel.albums.isEmpty)
-                          const Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 40),
-                              child: Text(
-                                "No se encontraron álbumes",
-                                style: TextStyle(color: Colors.white54),
-                              ),
-                            ),
-                          )
+                          Notfound(texto: "No se encontraron albums")
                         else
                           LayoutBuilder(
                             builder: (context, constraints) {
-                              int crossAxisCount = constraints.maxWidth > 600
-                                  ? 2
-                                  : 1;
+                              int crossAxisCount = 3;
+                              if (constraints.maxWidth <= 900 &&
+                                  constraints.maxWidth > 500) {
+                                crossAxisCount = 2;
+                              } else if (constraints.maxWidth <= 500) {
+                                crossAxisCount = 1;
+                              }
                               double childAspectRatio = crossAxisCount == 1
-                                  ? 0.85
-                                  : 0.74;
+                                  ? 0.90
+                                  : 0.84;
 
                               return GridView.builder(
                                 shrinkWrap: true,
@@ -129,7 +104,7 @@ class _HomeViewState extends State<HomeView> {
                                     ),
                                 itemBuilder: (context, index) {
                                   final album = _viewModel.albums[index];
-                                  return infoCard(
+                                  return Infocard(
                                     imagen: album.urlImg,
                                     titulo: album.nombre,
                                     tipo: album.tipo,
