@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:musicapp/data/model/cancion.dart';
+import 'package:musicapp/ui/screens/player_screen.dart';
 
 class CancionesListView extends StatelessWidget {
   final bool isLoadingCanciones;
   final List<Cancion> cancionesDelAlbum;
 
   const CancionesListView({
-    Key? key,
+    super.key,
     required this.isLoadingCanciones,
     required this.cancionesDelAlbum,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,8 @@ class CancionesListView extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.white, // Cambiamos a blanco para que resalte en el fondo oscuro
+                color: Colors
+                    .white, // Cambiamos a blanco para que resalte en el fondo oscuro
               ),
             ),
           ),
@@ -34,36 +36,55 @@ class CancionesListView extends StatelessWidget {
         isLoadingCanciones
             ? const Padding(
                 padding: EdgeInsets.all(40.0),
-                child: Center(child: CircularProgressIndicator(color: Colors.white)),
+                child: Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                ),
               )
             : cancionesDelAlbum.isNotEmpty
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: cancionesDelAlbum.length,
-                    itemBuilder: (context, index) {
-                      final cancion = cancionesDelAlbum[index];
-                      return ListTile(
-                        leading: Text('${index + 1}', style: const TextStyle(color: Colors.white70)),
-                        title: Text(cancion.nombre, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                        subtitle: Text(cancion.artista.join(', '), style: const TextStyle(color: Colors.white54)),
-                        trailing: const Icon(Icons.play_circle_fill, color: Colors.white),
-                        onTap: () {
-                          
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Tocaste la canción: ${cancion.nombre}'),
-                              duration: const Duration(seconds: 1),
-                            ),
-                          );
-                        },
+            ? ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: cancionesDelAlbum.length,
+                itemBuilder: (context, index) {
+                  final cancion = cancionesDelAlbum[index];
+                  return ListTile(
+                    leading: Text(
+                      '${index + 1}',
+                      style: const TextStyle(color: Colors.white70),
+                    ),
+                    title: Text(
+                      cancion.nombre,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Text(
+                      cancion.artista.join(', '),
+                      style: const TextStyle(color: Colors.white54),
+                    ),
+                    trailing: const Icon(
+                      Icons.play_circle_fill,
+                      color: Colors.white,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PlayerScreen(cancion: cancion),
+                        ),
                       );
                     },
-                  )
-                : const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text('Este álbum no contiene canciones registradas.', style: TextStyle(color: Colors.white)),
-                  ),
+                  );
+                },
+              )
+            : const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Este álbum no contiene canciones registradas.',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
       ],
     );
   }

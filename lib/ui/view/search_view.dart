@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musicapp/ui/screens/home_screen.dart';
-import 'package:musicapp/ui/view/home_view.dart';
+import 'package:musicapp/ui/screens/player_screen.dart';
 import 'package:musicapp/ui/view_model/search_view_model.dart';
 import 'package:musicapp/ui/widget/error_info.dart';
 import 'package:musicapp/ui/widget/header.dart';
@@ -121,9 +121,10 @@ class _SearchViewState extends State<SearchView> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => HomeView(
-                                                // cancion: cancions TODO: colocar la vista de info de la cancion
-                                              ),
+                                              builder: (context) =>
+                                                  PlayerScreen(
+                                                    cancion: cancion,
+                                                  ),
                                             ),
                                           );
                                         },

@@ -33,7 +33,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.keyboard_arrow_down),
+          icon: const Icon(Icons.keyboard_arrow_left),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
@@ -170,17 +170,11 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     children: [
                       Text(
                         _formatearDuracion(_progresoActual.toInt()),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
                       Text(
                         _formatearDuracion(cancion.duracion),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
                     ],
                   ),
