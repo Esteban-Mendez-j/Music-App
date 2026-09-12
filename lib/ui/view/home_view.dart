@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musicapp/ui/view/search_view.dart';
 import 'package:musicapp/ui/view_model/home_view_model.dart';
 import 'package:musicapp/ui/widget/error_info.dart';
 import 'package:musicapp/ui/widget/header.dart';
@@ -96,12 +97,26 @@ class _HomeViewState extends State<HomeView> {
                                 itemBuilder: (context, index) {
                                   final album =
                                       _viewModel.albumsRecientes[index];
-                                  return Infocard(
-                                    imagen: album.urlImg,
-                                    titulo: album.nombre,
-                                    tipo: album.tipo,
-                                    subTitulo:
-                                        '${album.artista?.nombre ?? "Desconocido"} - ${album.totalCanciones} canciones',
+
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SearchView(
+                                            // album: album TODO: colocar la view de detalles de un album
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Infocard(
+                                      imagen: album.urlImg,
+                                      titulo: album.nombre,
+                                      tipo: album.tipo,
+                                      subTitulo:
+                                          '${album.artista?.nombre ?? "Desconocido"} - ${album.totalCanciones} canciones',
+                                    ),
                                   );
                                 },
                               );
