@@ -10,19 +10,23 @@ class HomeViewModel extends ChangeNotifier {
   final BusquedaService _busquedaService;
 
   String _textoBusqueda = "";
+  List<Album> _albumsRecientes = [];
   List<Album> _albums = [];
   List<Cancion> _canciones = [];
   List<Artista> _artistas = [];
   bool _isLoading = false;
   String _mensajeError = "";
+  Paginacion _paginacionRecientes = Paginacion(limit: 10, offset: 0);
 
   String get textoBusqueda => _textoBusqueda;
+  List<Album> get albumsRecientes => _albumsRecientes;
   List<Album> get albums => _albums;
   List<Cancion> get canciones => _canciones;
   List<Artista> get artistas => _artistas;
   bool get isLoading => _isLoading;
   String get mensajeError => _mensajeError;
   bool get hasError => _mensajeError.isNotEmpty;
+  Paginacion get paginacionReciente => _paginacionRecientes;
 
   HomeViewModel({BusquedaService? busquedaService})
     : _busquedaService = busquedaService ?? BusquedaService();
@@ -32,15 +36,35 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getAlbumRecientes() async {
+  void next() {
+    _paginacionRecientes.nextPage();
+    getAlbumRecientes(
+      limit: paginacionReciente.limit,
+      offset: paginacionReciente.offset,
+    );
+  }
+
+  void previous() {
+    _paginacionRecientes.previousPage();
+    getAlbumRecientes(
+      limit: paginacionReciente.limit,
+      offset: paginacionReciente.offset,
+    );
+  }
+
+  Future<void> getAlbumRecientes({int limit = 10, int offset = 0}) async {
     _isLoading = true;
     _mensajeError = "";
     notifyListeners();
 
     try {
-      _albums = await _busquedaService.fetchRecentAlbums(
-        paginacion: Paginacion(limit: 10, offset: 0),
+      Map<String, dynamic> data = await _busquedaService.fetchRecentAlbums(
+        limit: limit,
+        offset: offset,
       );
+
+      _albumsRecientes = data["items"];
+      _paginacionRecientes = data["paginacion"];
     } catch (e) {
       log("Error en getAlbumRecientes: $e");
       _mensajeError = "No se pudieron obtener los álbumes recientes.";

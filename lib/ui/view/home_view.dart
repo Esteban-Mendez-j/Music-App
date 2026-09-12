@@ -5,6 +5,7 @@ import 'package:musicapp/ui/widget/header.dart';
 import 'package:musicapp/ui/widget/info_card.dart';
 import 'package:musicapp/ui/widget/loading.dart';
 import 'package:musicapp/ui/widget/not_found.dart';
+import 'package:musicapp/ui/widget/paginacion_widget.dart';
 import 'package:musicapp/ui/widget/search_bar.dart';
 
 class HomeView extends StatefulWidget {
@@ -21,7 +22,10 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     _viewModel = HomeViewModel();
-    _viewModel.getAlbumRecientes();
+    _viewModel.getAlbumRecientes(
+      limit: _viewModel.paginacionReciente.limit,
+      offset: _viewModel.paginacionReciente.offset,
+    );
   }
 
   @override
@@ -75,7 +79,7 @@ class _HomeViewState extends State<HomeView> {
                             meensajeError: _viewModel.mensajeError,
                             onPressed: _viewModel.getAlbumRecientes,
                           )
-                        else if (_viewModel.albums.isEmpty)
+                        else if (_viewModel.albumsRecientes.isEmpty)
                           Notfound(texto: "No se encontraron albums")
                         else
                           LayoutBuilder(
@@ -94,7 +98,7 @@ class _HomeViewState extends State<HomeView> {
                               return GridView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemCount: _viewModel.albums.length,
+                                itemCount: _viewModel.albumsRecientes.length,
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: crossAxisCount,
@@ -103,7 +107,8 @@ class _HomeViewState extends State<HomeView> {
                                       childAspectRatio: childAspectRatio,
                                     ),
                                 itemBuilder: (context, index) {
-                                  final album = _viewModel.albums[index];
+                                  final album =
+                                      _viewModel.albumsRecientes[index];
                                   return Infocard(
                                     imagen: album.urlImg,
                                     titulo: album.nombre,
@@ -116,6 +121,8 @@ class _HomeViewState extends State<HomeView> {
                             },
                           ),
                         const SizedBox(height: 24),
+                        if (!_viewModel.isLoading)
+                          PaginacionWidget(homeViewModel: _viewModel),
                       ],
                     ),
                   ),
