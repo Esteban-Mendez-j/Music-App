@@ -66,7 +66,6 @@ class BusquedaService {
     }
   }
 
-
   // NUEVO MÉTODO PARA BUSCAR SOLO ÁLBUMES
   Future<List<Album>> searchAlbums({
     required String query,
@@ -100,9 +99,7 @@ class BusquedaService {
             .map((item) => Album.fromJson(item as Map<String, dynamic>))
             .toList();
       } else {
-        throw Exception(
-          "Error al buscar álbumes: ${response.statusCode}",
-        );
+        throw Exception("Error al buscar álbumes: ${response.statusCode}");
       }
     } catch (e) {
       log("Error en la peticion de álbumes: $e");
@@ -110,16 +107,13 @@ class BusquedaService {
     }
   }
 
-
-
-  // Obtener los albumes mas recientes (ultimas dos semanas)
-  Future<List<Album>> fetchRecentAlbums({Paginacion? paginacion}) async {
+  /// Obtener los álbumes más recientes
+  Future<Map<String, dynamic>> fetchRecentAlbums({
+    int limit = 10,
+    int offset = 0,
+  }) async {
     try {
       final token = await AuthService().getValidToken();
-
-      final limit = paginacion?.limit ?? 10;
-      final offset = paginacion?.offset ?? 0;
-
       final response = await http
           .get(
             Uri.parse(
@@ -137,11 +131,19 @@ class BusquedaService {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
-        final List<dynamic> items = data['albums']?['items'] ?? [];
+        final container = data['albums'] ?? {};
+        final List<dynamic> items = container['items'] ?? [];
 
-        return items
-            .map((item) => Album.fromJson(item as Map<String, dynamic>))
-            .toList();
+        return {
+          "items": items
+              .map((item) => Album.fromJson(item as Map<String, dynamic>))
+              .toList(),
+          "paginacion": Paginacion(
+            limit: container['limit'] ?? limit,
+            offset: container['offset'] ?? offset,
+            total: container['total'] ?? 0,
+          ),
+        };
       } else {
         throw Exception(
           "Error al obtener los albums recientes: ${response.statusCode}",

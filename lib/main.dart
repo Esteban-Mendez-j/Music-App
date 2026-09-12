@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:musicapp/config/environment.dart';
-// Asegúrate de que la ruta coincida con tu estructura de carpetas
-import 'package:musicapp/ui/screens/home_screen.dart'; 
+import 'package:musicapp/ui/view/main_view.dart';
+import 'package:flutter/gestures.dart';
 
 Future<void> main() async {
   try {
@@ -17,7 +17,7 @@ Future<void> main() async {
     return;
   }
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -27,15 +27,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Spotify Clone',
-      debugShowCheckedModeBanner: false, // Oculta la etiqueta roja de debug
-      // Como vamos a hacer algo estilo Spotify, el tema oscuro es un buen punto de partida
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF121212), // Color de fondo típico de Spotify
-        primaryColor: const Color.fromARGB(255, 227, 6, 6), // Verde Spotify
-      ),
-      // Apuntamos al HomeScreen que creamos en los pasos anteriores
-      home:  HomeScreen(), 
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(brightness: Brightness.dark),
+      scrollBehavior: MyScrollBehavior(),
+      home: MainView(),
     );
   }
+}
+
+class MyScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+  };
 }
