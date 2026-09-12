@@ -66,6 +66,52 @@ class BusquedaService {
     }
   }
 
+
+  // NUEVO MÉTODO PARA BUSCAR SOLO ÁLBUMES
+  Future<List<Album>> searchAlbums({
+    required String query,
+    Paginacion? paginacion,
+  }) async {
+    try {
+      final token = await AuthService().getValidToken();
+      final limit = paginacion?.limit ?? 10;
+      final offset = paginacion?.offset ?? 0;
+
+      final response = await http
+          .get(
+            Uri.parse(
+              "$apiUrl/search?q=${Uri.encodeComponent(query)}&type=album&limit=$limit&offset=$offset",
+            ),
+            headers: <String, String>{
+              HttpHeaders.authorizationHeader: "Bearer $token",
+              "Content-Type": "application/json",
+            },
+          )
+          .timeout(
+            const Duration(seconds: 10),
+            onTimeout: () => throw Exception("Tiempo de conexion agotado"),
+          );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        final List<dynamic> albumItems = data['albums']?['items'] ?? [];
+
+        return albumItems
+            .map((item) => Album.fromJson(item as Map<String, dynamic>))
+            .toList();
+      } else {
+        throw Exception(
+          "Error al buscar álbumes: ${response.statusCode}",
+        );
+      }
+    } catch (e) {
+      log("Error en la peticion de álbumes: $e");
+      throw Exception("Error al realizar la busqueda de álbumes: $e");
+    }
+  }
+
+
+
   // Obtener los albumes mas recientes (ultimas dos semanas)
   Future<List<Album>> fetchRecentAlbums({Paginacion? paginacion}) async {
     try {
