@@ -26,8 +26,9 @@ class Cancion {
   factory Cancion.fromJson(Map<String, dynamic> json) {
     // Obtener imagen de la cancion
     String imagen = "";
-    if (json['images'] != null && (json['images'] as List).isNotEmpty) {
-      imagen = json['images'][0]['url'] ?? "Imagen no disponible";
+    final images = json['album']?['images'];
+    if (images != null && (images as List).isNotEmpty) {
+      imagen = images[0]['url'] ?? "Imagen no disponible";
     }
 
     return Cancion(

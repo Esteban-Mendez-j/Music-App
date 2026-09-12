@@ -44,7 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
       setState(() {
-        _cancionesDelAlbum = canciones;
+        _cancionesDelAlbum = canciones.map((cancion) {
+          cancion.setUrlImg = widget.album.urlImg;
+          return cancion;
+        }).toList();
         _isLoadingCanciones = false;
       });
     } catch (e) {
