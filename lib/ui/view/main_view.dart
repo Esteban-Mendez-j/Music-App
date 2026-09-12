@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:musicapp/ui/view/home_view.dart';
+import 'package:musicapp/ui/widget/home_view.dart';
 import 'package:musicapp/ui/view/search_view.dart';
 
 class MainView extends StatefulWidget {

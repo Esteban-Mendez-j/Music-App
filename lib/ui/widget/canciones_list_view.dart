@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musicapp/data/model/cancion.dart';
-import 'package:musicapp/ui/screens/player_screen.dart';
+import 'package:musicapp/ui/view/player_view.dart';
 
 class CancionesListView extends StatelessWidget {
   final bool isLoadingCanciones;

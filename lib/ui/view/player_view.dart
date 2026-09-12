@@ -41,14 +41,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
           style: TextStyle(fontSize: 12),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.more_horiz),
-            onPressed: () {
-              // Menú de opciones
-            },
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),

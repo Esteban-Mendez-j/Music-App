@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:musicapp/ui/screens/home_screen.dart';
-import 'package:musicapp/ui/screens/player_screen.dart';
+import 'package:musicapp/ui/view/album_detail_view.dart';
+import 'package:musicapp/ui/view/player_view.dart';
 import 'package:musicapp/ui/view_model/search_view_model.dart';
 import 'package:musicapp/ui/widget/error_info.dart';
 import 'package:musicapp/ui/widget/header.dart';

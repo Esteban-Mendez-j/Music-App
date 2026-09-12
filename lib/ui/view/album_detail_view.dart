@@ -4,9 +4,9 @@ import 'package:musicapp/data/model/cancion.dart';
 import 'package:musicapp/data/model/paginacion.dart';
 import 'package:musicapp/data/service/cancion_service.dart';
 
-import '../widgets/album_header_card.dart';
-import '../widgets/animated_background.dart';
-import '../widgets/canciones_list_view.dart';
+import '../widget/album_header_card.dart';
+import '../widget/animated_background.dart';
+import '../widget/canciones_list_view.dart';
 
 class HomeScreen extends StatefulWidget {
   final Album album;
