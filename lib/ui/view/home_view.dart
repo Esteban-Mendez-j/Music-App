@@ -6,7 +6,6 @@ import 'package:musicapp/ui/widget/info_card.dart';
 import 'package:musicapp/ui/widget/loading.dart';
 import 'package:musicapp/ui/widget/not_found.dart';
 import 'package:musicapp/ui/widget/paginacion_widget.dart';
-import 'package:musicapp/ui/widget/search_bar.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -44,18 +43,6 @@ class _HomeViewState extends State<HomeView> {
           builder: (context, _) {
             return Column(
               children: [
-                // Barra de Búsqueda
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  child: searchBar(
-                    onChanged: (val) => _viewModel.setTextoBusqueda(val),
-                    onSubmitted: (_) => _viewModel.search(),
-                  ),
-                ),
-
                 // Contenido Principal
                 Expanded(
                   child: SingleChildScrollView(
